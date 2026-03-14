@@ -1,0 +1,1 @@
+#### if u use this file u need to use the about-blank or the blob buttons in order to open the website. If when going to the base website it says "refused to connect", that means that this won't work either.
