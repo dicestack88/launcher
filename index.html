@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{--font:Arial,sans-serif;--text:#fff;--accent:#ff4545;}
+html,body{margin:0;height:100%;font-family:var(--font);color:var(--text);display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;background-size:cover;background-position:center;}
+.loader{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;}
+.progress{width:260px;height:22px;border:2px solid white;background:#222;position:relative;}
+.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),#ff7777);box-shadow:0 0 10px var(--accent);transition:width .25s;}
+.progressText{font-size:22px;}
+.main{display:none;flex-direction:column;gap:20px;}
+h1{font-size:36px;margin-bottom:10px;}
+button{padding:12px 26px;font-size:16px;border:none;background:var(--accent);color:white;cursor:pointer;border-radius:6px;transition:.2s;box-shadow:0 0 10px rgba(255,69,69,.4);}
+button:hover{transform:scale(1.08);box-shadow:0 0 20px rgba(255,69,69,.8);}
+.footerLeft{position:absolute;bottom:0;left:0;padding:8px;opacity:.6;}
+.footerRight{position:absolute;bottom:0;right:0;padding:8px;opacity:.6;}
+</style>
+</head>
+<body>
+
+<div class="loader">
+  <div class="progressText">Loading 0%</div>
+  <div class="progress"><div class="bar"></div></div>
+</div>
+
+<div class="main">
+<h1>Dicestack88 Launcher</h1>
+<div>
+<button onclick="launch('blob')">Open Blob</button>
+<button onclick="launch('blank')">Open Blank</button>
+</div>
+</div>
+
+<div class="footerLeft">what the skibidi sigma</div>
+<div class="footerRight">Made by Dicestack88</div>
+
+<script>
+const site="https://dicestack88.github.io"
+
+// 🌐 online backgrounds
+const backgrounds=[
+  "https://images.unsplash.com/photo-1770490085047-1460359929e7?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1772415912163-bd5fe16b8ff0?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1772950399275-81eea958d92b?q=80&w=1886&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1769317996569-0a23b3f426f7?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1768409234914-96f61529b7e2?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1768409234914-96f61529b7e2?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1460355976672-71c3f0a4bdac?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1468657988500-aca2be09f4c6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1476842634003-7dcca8f832de?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1494376877685-d3d2559d4f82?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1710438399422-2fca27686bcd?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1479762937580-3b682a10a0d8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1574610758891-5b809b6e6e2e?q=80&w=1476&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1614285457768-646f65ca8548?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1499551660540-eaf0697882f5?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1632749042303-7f7a18ed6ff0?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1693237476029-f8469bb756a2?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1697479670670-d2a299df749c?q=80&w=2045&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1633436245198-44bc17f86b89?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+];
+
+// pick a random image each refresh
+document.body.style.backgroundImage = `url(${backgrounds[Math.floor(Math.random()*backgrounds.length)]})`;
+
+let progress=0;
+function startLoader(){
+  const bar=document.querySelector(".bar")
+  const text=document.querySelector(".progressText")
+  const i=setInterval(()=>{
+    progress+=Math.random()*7+3
+    if(progress>100)progress=100
+    bar.style.width=progress+"%"
+    text.innerText="Loading "+Math.floor(progress)+"%"
+    if(progress>=100){
+      clearInterval(i)
+      document.querySelector(".loader").style.display="none"
+      document.querySelector(".main").style.display="flex"
+    }
+  },120)
+}
+
+function launch(type){
+  const html=`
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html,body{margin:0;height:100%;}
+iframe{width:100%;height:100%;border:none;}
+</style>
+</head>
+<body>
+<iframe src="${site}"></iframe>
+</body>
+</html>
+`
+  if(type==="blob"){
+    const blob=new Blob([html],{type:"text/html"})
+    window.open(URL.createObjectURL(blob))
+  }else{
+    const win=window.open("about:blank")
+    win.document.write(html)
+    win.document.close()
+  }
+}
+
+startLoader();
+</script>
+
+</body>
+</html>
